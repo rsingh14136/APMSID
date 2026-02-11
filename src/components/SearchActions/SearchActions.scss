@@ -1,0 +1,97 @@
+.search-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 22px;
+  width: 100%;
+  min-width: 0;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* -----------------------
+      Search Input Box
+  ------------------------ */
+  .input-box {
+    position: relative;
+    width: 100%;
+    min-width: 0;     /* 🔑 critical fix */
+    flex-shrink: 0;   /* prevent collapse */
+
+    /* Keep your original desktop width */
+    @media (min-width: 768px) {
+      max-width: 330px;
+    }
+
+    .search-icon {
+      position: absolute;
+      top: 50%;
+      left: 12px;
+      transform: translateY(-50%);
+      color: gray;
+      pointer-events: none;
+    }
+
+    input {
+      width: 100%;
+      min-width: 0;
+      box-sizing: border-box;  /* 🔑 prevents overflow */
+      padding: 10px 14px 10px 38px;
+      border-radius: 30px;
+      border: 1px solid #ccc;
+      background: #fff;
+      transition: 0.3s;
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 5px #67e8f9;
+      }
+    }
+  }
+
+  /* -----------------------
+      Buttons Section
+      (UNCHANGED)
+  ------------------------ */
+ .buttons {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+
+  button {
+   padding: 10px 24px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #06b6d4, #0284c7);
+  color: #ffffff;
+  font-weight: 500;
+  cursor: pointer;
+  }
+
+  /* 📄 REPORT BUTTON */
+  .btn.primary {
+    background: linear-gradient(135deg, #6366f1, #4338ca);
+    
+    &:hover {
+      transform: translateY(-2px);
+     
+    }
+  }
+
+  /* ➕ ADD GROUP BUTTON */
+  .btn.info {
+  // background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+
+   
+
+    &:hover {
+      transform: translateY(-2px) scale(1.03);
+      
+    }
+  }
+}
+
+}

@@ -1,0 +1,64 @@
+.dashboard-main {
+  min-height: calc(100vh - 140px);
+  background: #f4f6f9;
+}
+
+/* MENU AREA */
+.dashboard-menu {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* CONTENT AREA */
+.dashboard-content {
+  width: 100%;
+}
+
+/* DROPDOWN CONTAINER */
+.card-dropdown-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding: 15px 20px;
+}
+
+/* ICON + DROPDOWN */
+.dropdown-with-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* COLOR PLATE ICON */
+.dropdown-icon {
+  position: absolute;
+  left: 10px;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+ 
+  pointer-events: none;
+}
+
+/* DROPDOWN */
+.card-dropdown {
+  padding: 8px 14px 8px 36px; /* space for icon */
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  cursor: pointer;
+  background: #ffffff;
+}
+
+.card-dropdown:focus {
+  outline: none;
+  border-color: #1aa3b5;
+  box-shadow: 0 0 0 2px rgba(26, 163, 181, 0.15);
+}

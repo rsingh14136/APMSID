@@ -1,0 +1,68 @@
+.group-master {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  background: #f3f4f6; // page background
+
+  .group-container {
+    flex: 1;
+    padding: 20px;
+
+    @media (min-width: 768px) {
+      padding: 40px;
+    }
+
+    .group-card {
+      background: #ffffff;
+      border-radius: 20px;
+      border: 2px solid #cbd5e1; // soft border
+      padding: 25px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+
+      .group-title {
+        display: flex;
+        justify-content:space-between;
+        font-size: 28px;
+        font-weight: 700;
+        border-bottom: 4px solid #0ea5e9;
+        padding-bottom: 6px;
+        margin-bottom: 25px;
+        color: #1f2937;
+      }
+    
+       .close-btn {
+         margin-left: auto;
+        display: flex;
+      background-color: #ef4444;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #b91c1c;
+      }
+    }
+      
+
+      // space between sections
+      .stats-cards {
+        margin-bottom: 25px;
+      }
+
+      .search-actions {
+        margin-bottom: 25px;
+      }
+
+      .group-table {
+        margin-bottom: 25px;
+      }
+
+      .group-chart {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

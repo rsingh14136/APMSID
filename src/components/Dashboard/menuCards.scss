@@ -1,0 +1,83 @@
+.menu-cards-page {
+  padding: 20px;
+}
+
+.back-btn {
+  margin-bottom: 20px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  background: #1aa3b5;
+  color: white;
+  cursor: pointer;
+}
+
+.menu-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+/* WRAPPER FOR CARD + LABEL */
+.menu-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* BASE CARD (UNCHANGED) */
+.menu-action-card {
+  border-radius: 14px;
+  padding: 0;
+  cursor: pointer;
+  text-align: center;
+  color: white;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background: #f2f2f2;
+  width: 85%;
+  height: 140px;
+}
+
+.menu-action-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 28px rgba(0,0,0,0.18);
+}
+
+/* IMAGE INSIDE CARD */
+.menu-action-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: comparable($number1: 1, $number2:2 );
+}
+
+/* TEXT FALLBACK */
+.menu-action-card .card-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  padding: 12px;
+}
+
+/* LABEL BELOW CARD */
+.card-label {
+  margin-top: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+}
+
+/* COLOR VARIANTS (UNCHANGED) */
+.menu-action-card.blue { background: linear-gradient(135deg, #2196f3, #1e88e5); }
+.menu-action-card.green { background: linear-gradient(135deg, #43a047, #2e7d32); }
+.menu-action-card.orange { background: linear-gradient(135deg, #fb8c00, #ef6c00); }
+.menu-action-card.purple { background: linear-gradient(135deg, #8e24aa, #6a1b9a); }
+.menu-action-card.red { background: linear-gradient(135deg, #e53935, #c62828); }
+.menu-action-card.teal { background: linear-gradient(135deg, #26a69a, #00796b); }
+.menu-action-card.gray { background: linear-gradient(135deg, #78909c, #546e7a); }
+.menu-action-card.default { background: linear-gradient(135deg, #607d8b, #455a64); }

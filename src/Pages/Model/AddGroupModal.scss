@@ -1,0 +1,174 @@
+/* ================= OVERLAY ================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* ================= MODAL CONTAINER ================= */
+.modal-container {
+  background: #ffffff;
+  width: min(90vw, 900px);     /* responsive width */
+  max-height: 90vh;            /* respect viewport height */
+  border-radius: 18px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.25s ease;
+  overflow: hidden;            /* important for scroll handling */
+}
+
+/* ================= HEADER ================= */
+.modals-header {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 22px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #ffffff;
+
+  h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+  }
+
+  .close-icon {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #6b7280;
+
+    &:hover {
+      color: #ef4444;
+    }
+  }
+}
+
+/* ================= BODY (SCROLLABLE) ================= */
+.modals-body {
+  flex: 1;                     /* fill remaining height */
+  padding: 22px;
+  overflow-y: auto;
+  background: #ffffff;
+}
+
+/* ================= INNER FORM ================= */
+.add-group-form {
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  background: #f9fafb;
+}
+
+/* ================= GRID ================= */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+  }
+
+  input,
+  select {
+    height: 42px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    background: #ffffff;
+
+    &:focus {
+      outline: none;
+      border-color: #06b6d4;
+      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.25);
+    }
+  }
+}
+
+/* ================= FOOTER ================= */
+.modals-footer {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+  padding: 16px 22px;
+  border-top: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+/* ================= BUTTONS ================= */
+.btn-secondary {
+  padding: 10px 22px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  cursor: pointer;
+
+  &:hover {
+    background: #f3f4f6;
+  }
+}
+
+.btn-primary {
+  padding: 10px 24px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #06b6d4, #0284c7);
+  color: #ffffff;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 720px) {
+  .modal-container {
+    width: 95vw;
+    max-height: 95vh;
+    border-radius: 14px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .modals-body {
+    padding: 16px;
+  }
+}
+
+/* ================= ANIMATION ================= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

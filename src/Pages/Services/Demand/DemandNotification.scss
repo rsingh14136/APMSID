@@ -1,0 +1,372 @@
+/* ================= PAGE WRAPPER ================= */
+.demand-page-wrapper {
+  width: 100%;
+  min-height: calc(100vh - 120px);
+  padding: 1.25rem;
+  background: #f1f5f9;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+/* ================= MAIN CARD ================= */
+.demand-card {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 1.25rem;
+  border: 2px solid #cbd5e1;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+}
+
+/* ================= CARD HEADER ================= */
+.demand-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.15rem 1.75rem;
+
+  h2 {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #0f172a;
+  }
+
+  .close-btn {
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    cursor: pointer;
+    padding: 0.35rem 0.45rem;
+    color: #64748b;
+    border-radius: 0.5rem;
+
+    &:hover {
+      color: #ef4444;
+      background: #fee2e2;
+      border-color: #fecaca;
+    }
+  }
+}
+
+/* ================= HEADER DIVIDER ================= */
+.header-divider {
+  height: 4px;
+  background: linear-gradient(90deg, #0078d4, #38bdf8);
+}
+
+/* ================= CARD BODY ================= */
+.demand-card-body {
+  padding: 1.75rem;
+  color: #1e293b;
+}
+
+/* ================= FORM SECTIONS ================= */
+.form-section {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+/* ================= SECTION HEADER ================= */
+.section-header {
+  background: linear-gradient(to right, #e0f7fa, #b2ebf2);
+  padding: 0.8rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  border-bottom: 1px solid #e2e8f0;
+
+  span {
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #334155;
+  }
+}
+
+/* ================= SECTION CONTENT ================= */
+.section-content {
+  padding: 1.25rem 1.5rem;
+}
+
+/* ================= GRID ================= */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+/* ================= FIELD GROUP ================= */
+.field-group {
+  label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 800;
+    margin-bottom: 0.3rem;
+    color: #334155;
+
+    .required {
+      color: #ef4444;
+    }
+  }
+}
+
+/* ================= INPUT ================= */
+.input-control {
+  width: 100%;
+  height: 34px;
+  padding: 0 0.7rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.45rem;
+  font-size: 0.82rem;
+  background: #ffffff;
+  transition: all 0.2s ease;
+  max-width: 420px;
+
+  &:focus {
+    outline: none;
+    border-color: #0078d4;
+    box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.15);
+  }
+}
+
+textarea.input-control {
+  height: auto;
+  padding: 0.6rem 0.75rem;
+  resize: vertical;
+}
+
+/* ================= CHECKBOX ================= */
+.checkbox-box {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.78rem;
+  width: fit-content;
+}
+
+/* ================= SEARCH ================= */
+.search-wrapper {
+  position: relative;
+  margin-bottom: 0.75rem;
+
+  .search-icon {
+    position: absolute;
+    top: 50%;
+    left: 0.65rem;
+    transform: translateY(-50%);
+    color: #94a3b8;
+  }
+
+  .input-control {
+    padding-left: 2.25rem;
+  }
+}
+
+/* ================= PROGRAM TAG STYLE ================= */
+.program-mapping-section {
+  .selected-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+
+    .tag {
+      background: #e0f2fe;
+      padding: 0.4rem 0.7rem;
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 600;
+
+      button {
+        background: none;
+        border: none;
+        color: #0078d4;
+        font-size: 1rem;
+        cursor: pointer;
+
+        &:hover {
+          color: #0369a1;
+        }
+      }
+    }
+  }
+
+  .available-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    max-height: 250px;
+    overflow-y: auto;
+
+    .available-item {
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.45rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #cbd5e1;
+      transition: all 0.2s;
+
+      &:hover {
+        background: #f1f5f9;
+        border-color: #38bdf8;
+      }
+
+      .add-btn {
+        font-weight: bold;
+        color: #0078d4;
+      }
+    }
+  }
+}
+
+/* ================= UPLOADED DRUG LIST ================= */
+.drug-list-wrapper {
+  margin-top: 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.drug-list-header {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  background: #f1f5f9;
+  padding: 0.6rem 1rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #334155;
+  border-bottom: 1px solid #cbd5e1;
+}
+
+.drug-list-body {
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.drug-list-row {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  padding: 0.55rem 1rem;
+  font-size: 0.78rem;
+  border-bottom: 1px solid #e2e8f0;
+
+  &:hover {
+    background: #f8fafc;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+/* ================= FILE UPLOAD ================= */
+/* ================= UPLOAD SECTION (CENTER & WIDE) ================= */
+.upload-section {
+  max-width: 520px;          /* wider */
+  margin: 0 auto;            /* center horizontally */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;      /* children full width */
+}
+
+/* dotted drag-drop box */
+.upload-dropzone {
+  width: 100%;
+  border: 2px dashed #38bdf8;
+  border-radius: 0.9rem;
+  padding: 1.25rem;
+  text-align: center;
+  cursor: pointer;
+  background: #f0f9ff;
+  transition: all 0.25s ease;
+
+  &:hover {
+    background: #e0f2fe;
+    border-color: #0078d4;
+  }
+
+  &.has-file {
+    border-color: #22c55e;
+    background: #ecfdf5;
+  }
+}
+
+/* upload button same width */
+.btn-upload {
+  width: 100%;
+  height: 38px;
+  margin-top: 0.75rem;
+  padding: 0;
+  font-size: 0.82rem;
+  font-weight: 800;
+  border-radius: 0.65rem;
+  background: linear-gradient(90deg, #0078d4, #38bdf8);
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+
+  &:hover {
+    background: linear-gradient(90deg, #0369a1, #0284c7);
+  }
+}
+
+
+
+/* ================= ACTIONS (MODERN FOOTER BAR) ================= */
+.actionsButton {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+
+  padding: 1rem 1.5rem;
+  margin-top: 1.75rem;
+
+ 
+
+  border-radius: 0 0 1.25rem 1.25rem;
+
+  /* subtle inner highlight */
+ // box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+
+  /* make buttons visually consistent */
+  .btn {
+    min-width: 120px;
+  }
+}
+
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .upload-section {
+    max-width: 100%;
+  }
+
+  .actions {
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+
+    .btn {
+      width: 100%;
+    }
+  }
+}
+
+/* ================= REMARKS TEXTAREA SPACING ================= */
+.form-section textarea.input-control {
+  margin: 1.25rem 1.5rem;   /* space from main box */
+  max-width: calc(100% - 3rem); /* keeps alignment clean */
+}
+

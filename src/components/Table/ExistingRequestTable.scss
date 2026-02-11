@@ -1,0 +1,286 @@
+/* ================= SECTION ================= */
+
+.existing-table-section {
+  margin-top: 1.5rem;
+}
+
+/* ================= CARD ================= */
+
+.table-card {
+  padding: 1rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+/* ================= TITLE ================= */
+
+.table-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #1f2937;
+}
+
+/* ================= SCROLL WRAPPER ================= */
+
+.table-scroll {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+/* ================= TABLE ================= */
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1100px;
+}
+
+.custom-table thead {
+  background: #f8fafc;
+}
+
+.custom-table th {
+  padding: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  color: #475569;
+  border-bottom: 1px solid #e5e7eb;
+  white-space: nowrap;
+}
+
+.custom-table td {
+  padding: 12px;
+  font-size: 13px;
+  color: #334155;
+  border-bottom: 1px solid #f1f5f9;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+}
+
+.custom-table tbody tr:hover {
+  background: #f1f5f9;
+}
+
+/* ================= CLICKABLE LINK ================= */
+
+.link {
+  color: #2563eb;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* ================= STATUS BADGES ================= */
+
+.statusRequest {
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 12px;
+  display: inline-block;
+}
+
+/* OPEN */
+.statusRequest.open {
+  background: #e6f7ff;
+  color: #096dd9;
+}
+
+/* IN PROGRESS */
+.statusRequest.in-progress,
+.statusRequest.progress {
+  background: #fff7e6;
+  color: #d48806;
+}
+
+/* REOPEN */
+.statusRequest.reopen {
+  background: #f9f0ff;
+  color: #722ed1;
+}
+
+/* CLOSED */
+.statusRequest.closed {
+  background: #fff1f0;
+  color: #cf1322;
+}
+
+/* ================= ACTION ICONS ================= */
+
+.action-icons-request {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.action-icons-request svg {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  color: #64748b;
+  transition: 0.2s ease;
+}
+
+.action-icons-request svg:hover {
+  color: #2563eb;
+  transform: scale(1.1);
+}
+
+/* ================= NO DATA ================= */
+
+.no-data {
+  padding: 1.5rem;
+  text-align: center;
+  color: #64748b;
+  background: #f8fafc;
+  border-radius: 12px;
+}
+
+/* ===================================================== */
+/* ================= DELETE MODAL UI =================== */
+/* ===================================================== */
+
+.delete-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ===== INFO GRID ===== */
+
+.delete-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.info-card {
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: 0.2s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-2px);
+}
+
+.label {
+  font-size: 12px;
+  color: #64748b;
+  margin-bottom: 6px;
+}
+
+.value {
+  font-weight: 600;
+  font-size: 14px;
+  color: #1e293b;
+}
+
+.badge {
+  background: #e0f2fe;
+  color: #0369a1;
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: inline-block;
+  width: fit-content;
+}
+
+/* ===== SECTION BLOCK ===== */
+
+.section-block {
+  background: #ffffff;
+  padding: 18px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.section-title {
+  font-weight: 600;
+  margin-bottom: 12px;
+  font-size: 15px;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 6px;
+  color: #1e293b;
+}
+
+/* ===== PROGRAM GRID ===== */
+
+.program-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pill {
+  background: #eef2ff;
+  color: #4338ca;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.pill:hover {
+  background: #4338ca;
+  color: white;
+}
+
+/* ===== ITEM TABLE ===== */
+
+.item-table-wrapper {
+  max-height: 260px;
+  overflow-y: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.mini-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.mini-table th {
+  background: #f1f5f9;
+  padding: 10px;
+  font-size: 13px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.mini-table td {
+  padding: 10px;
+  font-size: 13px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.mini-table tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+.mini-table tbody tr:hover {
+  background: #e2e8f0;
+}
+
+/* ===== STATES ===== */
+
+.delete-loading,
+.delete-empty {
+  text-align: center;
+  padding: 40px;
+  font-weight: 500;
+  color: #64748b;
+}

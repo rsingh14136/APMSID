@@ -1,0 +1,130 @@
+.menu-card {
+  background: #ffffff;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.menu-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+/* Header */
+.menu-header {
+  background: linear-gradient(135deg, #1aa3b5, #138496);
+  color: white;
+  padding: 14px 18px;
+  border-radius: 10px 10px 0 0;
+  cursor: pointer;
+}
+
+.menu-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.menu-icon {
+  font-size: 20px;
+}
+
+.arrow {
+  font-size: 16px;
+}
+
+/* Card Content */
+.menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex: none;
+  overflow-y: auto;
+}
+
+/* Flat items */
+.menu-item {
+  padding: 12px 16px;
+  cursor: pointer;
+  color: #0d6efd;
+  border-bottom: 1px solid #e0e0e0;
+  transition: background 0.2s ease;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-item:hover {
+  background: #f0f6ff;
+}
+
+/* Nested */
+.menu-group {
+  margin-bottom: 6px;
+}
+
+.submenu-title {
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  font-weight: 500;
+  color: #0d6efd;
+  border-bottom: 1px solid #e0e0e0;
+  transition: background 0.2s ease;
+}
+
+.submenu-title:hover {
+  background: #f0f6ff;
+}
+
+.submenu-title.open {
+  background: #e7f3ff;
+}
+
+/* Children */
+.submenu {
+  margin-top: 6px;
+  padding-left: 10px;
+}
+
+.submenu-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.2s ease;
+}
+
+.submenu-item:last-child {
+  border-bottom: none;
+}
+
+.submenu-item:hover {
+  background: #f2f2f2;
+}
+
+.submenu-item.active {
+  background: #1f4e66;
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .menu-card {
+    max-width: 48%;
+  }
+}
+
+@media (max-width: 768px) {
+  .menu-card {
+    max-width: 100%;
+  }
+}

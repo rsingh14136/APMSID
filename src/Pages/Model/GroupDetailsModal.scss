@@ -1,0 +1,150 @@
+/* Overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Modal container */
+.modal-container {
+  background: #ffffff;
+  width: min(90vw, 820px);
+  max-height: 90vh;
+  border-radius: 18px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: fadeIn 0.25s ease;
+}
+
+/* Header */
+.modals-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 22px;
+  border-bottom: 1px solid #e5e7eb;
+
+  h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .close-icon {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #6b7280;
+
+    &:hover {
+      color: #ef4444;
+    }
+  }
+}
+
+/* Body */
+.modals-body {
+  padding: 22px;
+  overflow-y: auto;
+}
+
+/* Inner bordered box (like Add modal) */
+.details-box {
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 22px;
+  background: #f9fafb;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+
+/* Detail rows */
+.detail-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  .label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b7280;
+  }
+
+  .value {
+    font-size: 15px;
+    font-weight: 500;
+    color: #111827;
+  }
+}
+
+/* Status pill */
+.status {
+  display: inline-block;
+  width: fit-content;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.status.active {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.status.inactive {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Footer */
+.modals-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 22px;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* Button */
+.btn-secondary {
+  padding: 10px 22px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  background: white;
+  cursor: pointer;
+
+  &:hover {
+    background: #f3f4f6;
+  }
+}
+
+/* Responsive */
+@media (max-width: 720px) {
+  .details-box {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-container {
+    width: 95vw;
+    max-height: 95vh;
+  }
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

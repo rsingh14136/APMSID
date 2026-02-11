@@ -1,0 +1,102 @@
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.4); // Darker, slightly blue tint for the backdrop
+  backdrop-filter: blur(4px); // Adds that modern "glass" effect
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.confirm-modal {
+  width: 380px;
+  background: #ffffff;
+  border-radius: 24px; // Much rounder corners
+  padding: 40px 30px;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  animation: scaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+  .icon-wrapper {
+    position: relative;
+    width: fit-content;
+    margin: 0 auto 24px;
+
+    .icon-circle {
+      width: 80px;
+      height: 80px;
+      background: #f1f5f9;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+    }
+
+    // Small decorative dots to mimic the "scraps" in the screenshot
+    .dot {
+      position: absolute;
+      border-radius: 50%;
+      &-1 { width: 10px; height: 10px; background: #fb923c; top: 5px; right: 0; }
+      &-2 { width: 6px; height: 6px; background: #38bdf8; bottom: 10px; left: -5px; }
+    }
+  }
+
+  .modal-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.3;
+    margin: 0;
+  }
+
+  .file-name {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #94a3b8; // Lighter gray as seen in screenshot
+    font-style: italic;
+    word-break: break-all;
+  }
+
+  .confirm-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 32px;
+
+    .btn {
+      flex: 1;
+      padding: 14px 0;
+      border-radius: 12px; // Rounded buttons
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+
+      &-cancel {
+        background: #ffffff;
+        border: 1.5px solid #e2e8f0;
+        color: #64748b;
+
+        &:hover { background: #f8fafc; }
+      }
+
+      &-delete {
+        background: #e11d48; // The specific red from the UI
+        color: #ffffff;
+        box-shadow: 0 10px 15px -3px rgba(225, 29, 72, 0.3);
+
+        &:hover {
+          background: #be123c;
+          transform: translateY(-1px);
+        }
+      }
+    }
+  }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}

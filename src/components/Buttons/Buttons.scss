@@ -1,0 +1,132 @@
+.btn {
+  padding: 12px 22px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+
+  /* ========== ICONS ========== */
+  .left-icon,
+  .right-icon {
+    width: 18px;
+    height: 18px;
+    opacity: 0.95;
+    transition: transform 0.25s ease;
+  }
+
+  /* Slight icon move on hover */
+  &:hover .left-icon {
+    transform: translateX(-1px);
+  }
+
+  &:hover .right-icon {
+    transform: translateX(1px);
+  }
+
+  /* ========== HOVER ========== */
+  &:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+  }
+
+  /* ========== ACTIVE ========== */
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+  }
+
+  /* ========== DISABLED ========== */
+  &.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+    filter: grayscale(0.2);
+  }
+
+  /* ========== LOADING ========== */
+  .animate-spin {
+    animation: spin 0.9s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* ========== VARIANTS ========== */
+
+  &.primary {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+   // box-shadow: 0 8px 20px rgba(37, 117, 252, 0.45);
+  }
+
+  &.success {
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+ //   box-shadow: 0 8px 20px rgba(34, 197, 94, 0.45);
+  }
+
+  &.danger {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+  //  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.45);
+  }
+
+  &.warning {
+    background: linear-gradient(135deg, #f59e0b, #f97316);
+    color: #111;
+  //  box-shadow: 0 8px 20px rgba(249, 115, 22, 0.45);
+  }
+
+  &.info {
+    background: linear-gradient(135deg, #0ea5e9, #2563eb);
+   // box-shadow: 0 8px 20px rgba(37, 99, 235, 0.45);
+  }
+
+  &.outline {
+    background: transparent;
+    border: 2px solid #6b7280;
+    color: #6b7280;
+    box-shadow: none;
+
+    &:hover {
+      background: #6b7280;
+      color: #fff;
+    }
+  }
+
+  /* ========== SIZES ========== */
+  &.sm {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  &.md {
+    padding: 12px 22px;
+    font-size: 15px;
+  }
+
+  &.lg {
+    padding: 14px 28px;
+    font-size: 16px;
+  }
+
+  /* ========== FULL WIDTH ========== */
+  &.fullWidth {
+    width: 100%;
+  }
+}
