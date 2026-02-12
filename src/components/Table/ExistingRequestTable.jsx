@@ -190,7 +190,7 @@ const ExistingRequestTable = ({
             {details.programs?.length > 0 && (
               <div className="section-block">
                 <div className="section-title">
-                  Programs ({details.programs.length})
+                 Selected Programs ({details.programs.length})
                 </div>
 
                 <div className="program-grid">
@@ -207,7 +207,7 @@ const ExistingRequestTable = ({
             {details.items?.length > 0 && (
               <div className="section-block">
                 <div className="section-title">
-                  Items ({details.items.length})
+                  Programs ({details.items.length})
                 </div>
 
                 <div className="item-table-wrapper">
@@ -375,6 +375,14 @@ const ExistingRequestTable = ({
               onClick={() => setShowExtendModal(false)}
             >
               Cancel
+            </Button>
+
+            <Button
+              variant="primary"
+              onClick={handleConfirmDelete}
+              disabled={isDeleting}
+            >
+              {isDeleting ? "Deleting..." : "Confirm Delete"}
             </Button>
           </>
         }
