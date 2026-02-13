@@ -1,0 +1,67 @@
+/* ===== EXTEND DATE SECTION ===== */
+
+.extend-date-field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+/* Label styling */
+.extend-date-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
+}
+
+/* Input + Textarea common style */
+.extend-date-field input,
+.extend-date-field textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 14px;
+  background-color: #ffffff;
+  outline: none;
+  transition: all 0.25s ease;
+  font-family: "Inter", sans-serif;
+}
+
+/* Date Input */
+.extend-date-field input:hover,
+.extend-date-field textarea:hover {
+  border-color: #94a3b8;
+}
+
+/* Focus Effect */
+.extend-date-field input:focus,
+.extend-date-field textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+}
+
+/* ===== REMARK TEXTAREA SPECIAL STYLING ===== */
+
+.extend-date-field textarea {
+  min-height: 90px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+/* Placeholder */
+.extend-date-field textarea::placeholder {
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+/* Character counter style (optional if you add later) */
+.remark-counter {
+  position: absolute;
+  right: 10px;
+  bottom: 6px;
+  font-size: 11px;
+  color: #94a3b8;
+}

@@ -57,4 +57,29 @@ export const getViewDetail = async (finYear,notificationNo, storeId) => {
   return res.text(); // ✅ TEXT
 };
 
+export const extendDemandRequest = async (payload) => {
+  try {
+    const response = await fetch(
+   `${BASE_URL}/extend`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to extend demand");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Extend API Error:", error);
+    throw error;
+  }
+};
+
+
 

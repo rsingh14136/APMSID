@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { Eye, Trash2, FileText } from "lucide-react";
-import CustomModel from "../../Pages/Model/CustomModel";
 import Button from "../Buttons/Button";
+
 import {
   getDeleteDetail,
   getExtendDetail,
-  getViewDetail
+  getViewDetail,
+  extendDemandRequest
 } from "../../api/ServiceApi/Demand/DemandNotificationApi";
 import "./ExistingRequestTable.scss";
+import DemandDetailsModal from "./DemandDetailsModal";
 
 const ExistingRequestTable = ({
   rows,
@@ -25,15 +27,32 @@ const ExistingRequestTable = ({
   const [extendDetails, setExtendDetails] = useState(null);
   const [loadingExtendDetails, setLoadingExtendDetails] = useState(false);
 
-    const [showViewModal, setViewModal] = useState(false);
+  const [showViewModal, setViewModal] = useState(false);
   const [viewDetails, setViewDetails] = useState(null);
   const [loadingViewDetails, setLoadingViewDetails] = useState(false);
+
+  const [extendDate, setExtendDate] = useState("");
+  const [extendRemark, setExtendRemark] = useState("");
+
+  const formatDateToBackend = (dateStr) => {
+    const months = [
+      "jan","feb","mar","apr","may","jun",
+      "jul","aug","sep","oct","nov","dec"
+    ];
+
+    const date = new Date(dateStr);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+
+    return `${day}-${month}-${year}`;
+  };
 
   if (!Array.isArray(rows) || rows.length === 0) return null;
 
   const isClosed = (statusCode) => statusCode === 50;
 
-  /* ================= FETCH DELETE DETAILS ================= */
+  /* ================= DELETE ================= */
   const handleDeleteClick = async (row) => {
     try {
       setSelectedRow(row);
@@ -47,8 +66,7 @@ const ExistingRequestTable = ({
         storeId
       );
 
-      const parsedData = JSON.parse(responseText);
-      setDeleteDetails(parsedData);
+      setDeleteDetails(JSON.parse(responseText));
     } catch (error) {
       console.error("Failed to load delete details", error);
     } finally {
@@ -56,11 +74,11 @@ const ExistingRequestTable = ({
     }
   };
 
-  /* ================= FETCH EXTEND DETAILS ================= */
+  /* ================= EXTEND ================= */
   const handleExtendClick = async (row) => {
     try {
       setSelectedRow(row);
-     setShowExtendModal(true);
+      setShowExtendModal(true);
       setLoadingExtendDetails(true);
       setExtendDetails(null);
 
@@ -70,8 +88,7 @@ const ExistingRequestTable = ({
         storeId
       );
 
-      const parsedData = JSON.parse(responseText);
-      setExtendDetails(parsedData);
+      setExtendDetails(JSON.parse(responseText));
     } catch (error) {
       console.error("Failed to load extend details", error);
     } finally {
@@ -79,13 +96,11 @@ const ExistingRequestTable = ({
     }
   };
 
-  /*=============================view detail=========*/
+  /* ================= VIEW ================= */
   const handleViewClick = async (row) => {
-    console.log("=====view data======")
     try {
       setSelectedRow(row);
-     
-       setViewModal(true);
+      setViewModal(true);
       setLoadingViewDetails(true);
       setViewDetails(null);
 
@@ -95,22 +110,20 @@ const ExistingRequestTable = ({
         storeId
       );
 
-      const parsedData = JSON.parse(responseText);
-      console.log("===",parsedData)
-      setViewDetails(parsedData);
+      setViewDetails(JSON.parse(responseText));
     } catch (error) {
-      console.error("Failed to load extend details", error);
+      console.error("Failed to load view details", error);
     } finally {
       setLoadingViewDetails(false);
     }
-  }; 
+  };
 
   /* ================= CONFIRM DELETE ================= */
   const handleConfirmDelete = async () => {
     try {
       setIsDeleting(true);
 
-      console.log("Final Delete for:", selectedRow.notificationNo);
+      console.log("Delete:", selectedRow.notificationNo);
 
       setShowDeleteModal(false);
       setDeleteDetails(null);
@@ -122,120 +135,47 @@ const ExistingRequestTable = ({
     }
   };
 
-  /* ================= REUSABLE MODAL COMPONENT ================= */
+  /* ================= CONFIRM EXTEND ================= */
+  const handleConfirmExtend = async () => {
+    try {
+      if (!extendDate) {
+        alert("Please select new submission date");
+        return;
+      }
 
-  const DemandDetailsModal = ({
-    show,
-    onClose,
-    headerTitle,
-    details,
-    loading,
-    footerButtons
-  }) => {
-    return (
-      <CustomModel
-        show={show}
-        onClose={onClose}
-        headerTitle={headerTitle}
-        width="900px"
-        showFooter={true}
-        footerButtons={footerButtons}
-      >
-        {loading ? (
-          <div className="delete-loading">Loading details...</div>
-        ) : details ? (
-          <div className="delete-container">
-            {/* BASIC INFO GRID */}
-            <div className="delete-grid">
-              <div className="info-card">
-                <span className="label">Notification No</span>
-                <span className="value">{details.notificationNo}</span>
-              </div>
+      if (!extendRemark.trim()) {
+        alert("Please enter remarks");
+        return;
+      }
 
-              <div className="info-card">
-                <span className="label">Demand Type</span>
-                <span className="value">{details.demandType}</span>
-              </div>
+      const formattedDate = formatDateToBackend(extendDate);
 
-              <div className="info-card">
-                <span className="label">Date Constraint</span>
-                <span className="value badge">
-                  {details.dateConstraint ? "Yes" : "No"}
-                </span>
-              </div>
+      const payload = {
+        strIndentPeriodValue: financialYear,
+        strNotificationNo: selectedRow.notificationNo,
+        strStoreId: storeId,
+        strExtendLastDate: formattedDate,
+        strRemarks: extendRemark.trim()
+      };
 
-              <div className="info-card">
-                <span className="label">Submission Last Date</span>
-                <span className="value">
-                  {details.submissionLastDate}
-                </span>
-              </div>
+      const response = await extendDemandRequest(payload);
 
-              <div className="info-card">
-                <span className="label">Program Constraint</span>
-                <span className="value badge">
-                  {details.programConstraint ? "Yes" : "No"}
-                </span>
-              </div>
+      if (response.status === "SUCCESS") {
+        alert(response.message);
 
-              <div className="info-card">
-                <span className="label">Drug Constraint</span>
-                <span className="value badge">
-                  {details.drugConstraint ? "Yes" : "No"}
-                </span>
-              </div>
-            </div>
+        setShowExtendModal(false);
+        setExtendDetails(null);
+        setSelectedRow(null);
+        setExtendDate("");
+        setExtendRemark("");
 
-            {/* PROGRAM SECTION */}
-            {details.programs?.length > 0 && (
-              <div className="section-block">
-                <div className="section-title">
-                 Selected Programs ({details.programs.length})
-                </div>
-
-                <div className="program-grid">
-                  {details.programs.map((p) => (
-                    <div key={p.id} className="pill">
-                      {p.name}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* ITEMS SECTION */}
-            {details.items?.length > 0 && (
-              <div className="section-block">
-                <div className="section-title">
-                  Programs ({details.items.length})
-                </div>
-
-                <div className="item-table-wrapper">
-                  <table className="mini-table">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Item Name</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {details.items.map((item, index) => (
-                        <tr key={item.id}>
-                          <td>{index + 1}</td>
-                          <td>{item.name}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className="delete-empty">No data found</div>
-        )}
-      </CustomModel>
-    );
+      } else {
+        alert(response.message || "Failed to extend");
+      }
+    } catch (error) {
+      console.error("Extend failed", error);
+      alert("Something went wrong while extending.");
+    }
   };
 
   /* ================= UI ================= */
@@ -301,9 +241,7 @@ const ExistingRequestTable = ({
 
                     <td>
                       <div className="action-icons-request">
-                        <Eye  onClick={() =>
-                            !closed && handleViewClick(row)
-                          }/>
+                        <Eye onClick={() => !closed && handleViewClick(row)} />
 
                         <FileText
                           style={{
@@ -355,7 +293,7 @@ const ExistingRequestTable = ({
               onClick={handleConfirmDelete}
               disabled={isDeleting}
             >
-              {isDeleting ? "Deleting..." : "Confirm Delete"}
+              {isDeleting ? "Deleting..." : "Delete"}
             </Button>
           </>
         }
@@ -368,6 +306,11 @@ const ExistingRequestTable = ({
         headerTitle="Extend Demand Details"
         details={extendDetails}
         loading={loadingExtendDetails}
+        showExtendDate={true}
+        extendDate={extendDate}
+        setExtendDate={setExtendDate}
+        extendRemark={extendRemark}
+        setExtendRemark={setExtendRemark}
         footerButtons={
           <>
             <Button
@@ -379,30 +322,28 @@ const ExistingRequestTable = ({
 
             <Button
               variant="primary"
-              onClick={handleConfirmDelete}
-              disabled={isDeleting}
+              onClick={handleConfirmExtend}
             >
-              {isDeleting ? "Deleting..." : "Confirm Delete"}
+              Extend
             </Button>
           </>
         }
       />
 
-       <DemandDetailsModal
+      {/* VIEW MODAL */}
+      <DemandDetailsModal
         show={showViewModal}
         onClose={() => setViewModal(false)}
         headerTitle="View Details"
         details={viewDetails}
         loading={loadingViewDetails}
         footerButtons={
-          <>
-            <Button
-              variant="secondary"
-              onClick={() => setViewModal(false)}
-            >
-              Cancel
-            </Button>
-          </>
+          <Button
+            variant="secondary"
+            onClick={() => setViewModal(false)}
+          >
+            Close
+          </Button>
         }
       />
     </>

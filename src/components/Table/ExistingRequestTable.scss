@@ -284,3 +284,30 @@
   font-weight: 500;
   color: #64748b;
 }
+/* ===== EXTEND DATE FIELD ===== */
+
+.extend-date-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.extend-date-field label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #475569;
+}
+
+.extend-date-field input {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  font-size: 13px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.extend-date-field input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
