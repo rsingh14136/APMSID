@@ -81,5 +81,36 @@ export const extendDemandRequest = async (payload) => {
   }
 };
 
+export const deleteDemand = async (payload) => {
+  const response = await fetch(
+    `${BASE_URL}/delete`,
+    {
+      method: "POST", // or POST if backend uses POST
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Delete failed");
+  }
+
+  return response.json();
+};
+
+
+export const saveProjectedDemand = async (formData) => {
+  const res = await fetch(`${BASE_URL}/save`, {
+    method: "POST",
+    body: formData
+  });
+
+  return res.json();
+};
+
+
+
 
 

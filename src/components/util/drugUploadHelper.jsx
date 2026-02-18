@@ -45,6 +45,58 @@ export const parseDrugExcel = (file) => {
   });
 };
 
+
+export const parseDrugExcelFullColumns = (file) => {
+  return new Promise((resolve, reject) => {
+    if (!file) {
+      reject("No file selected");
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      try {
+        const data = new Uint8Array(e.target.result);
+
+        const workbook = XLSX.read(data, { type: "array" });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+
+        // Get raw rows (array of arrays)
+        const rows = XLSX.utils.sheet_to_json(worksheet, {
+          header: 1,
+          defval: ""   // empty cells become ""
+        });
+
+        // ✅ Remove header row only
+        const dataRows = rows.slice(1);
+
+        // ✅ Return all column values
+        const result = dataRows
+          .filter(row => row.length > 0) // ignore empty rows
+          .map((row, index) => ({
+            sNo: index + 1,
+            drugId: String(row[0] ?? "").trim(),
+            drugName: String(row[1] ?? "").trim(),
+            rate: String(row[2] ?? "").trim(),
+            rateUnitId: String(row[3] ?? "").trim()
+          }));
+
+        resolve(result);
+
+      } catch (err) {
+        console.error(err);
+        reject("Invalid Excel file");
+      }
+    };
+
+    reader.onerror = () => reject("File reading failed");
+
+    reader.readAsArrayBuffer(file);
+  });
+};
+
 export const parseOptionHtml = (html) => {
   if (!html) return [];
 

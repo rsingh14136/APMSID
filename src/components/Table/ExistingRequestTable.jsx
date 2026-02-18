@@ -6,7 +6,8 @@ import {
   getDeleteDetail,
   getExtendDetail,
   getViewDetail,
-  extendDemandRequest
+  extendDemandRequest,
+  deleteDemand
 } from "../../api/ServiceApi/Demand/DemandNotificationApi";
 import "./ExistingRequestTable.scss";
 import DemandDetailsModal from "./DemandDetailsModal";
@@ -33,6 +34,7 @@ const ExistingRequestTable = ({
 
   const [extendDate, setExtendDate] = useState("");
   const [extendRemark, setExtendRemark] = useState("");
+    const [deleteRemark, setDeleteRemark] = useState("");
 
   const formatDateToBackend = (dateStr) => {
     const months = [
@@ -119,21 +121,49 @@ const ExistingRequestTable = ({
   };
 
   /* ================= CONFIRM DELETE ================= */
-  const handleConfirmDelete = async () => {
-    try {
-      setIsDeleting(true);
+  
+  /* ================= CONFIRM DELETE ================= */
+const handleConfirmDelete = async () => {
+  try {
+    if (!deleteRemark.trim()) {
+      alert("Please enter delete remark");
+      return;
+    }
 
-      console.log("Delete:", selectedRow.notificationNo);
+    setIsDeleting(true);
 
+    const payload = {
+      strIndentPeriodValue: financialYear,
+      strNotificationNo: selectedRow.notificationNo,
+      strStoreId: storeId,
+      strRemarks: deleteRemark.trim()
+    };
+
+    console.log("Delete Payload:", payload);
+
+    const response = await deleteDemand(payload);
+    console.log("response",response.status)
+
+    if (response.status === "SUCCESS") {
+      alert(response.message || "Deleted Successfully");
+
+      // ✅ reset states
       setShowDeleteModal(false);
       setDeleteDetails(null);
       setSelectedRow(null);
-    } catch (error) {
-      console.error("Delete failed", error);
-    } finally {
-      setIsDeleting(false);
+      setDeleteRemark("");
+
+    } else {
+      alert(response.message || "Delete failed");
     }
-  };
+
+  } catch (error) {
+    console.error("Delete failed", error);
+    alert("Something went wrong while deleting.");
+  } finally {
+    setIsDeleting(false);
+  }
+};
 
   /* ================= CONFIRM EXTEND ================= */
   const handleConfirmExtend = async () => {
@@ -279,6 +309,9 @@ const ExistingRequestTable = ({
         headerTitle="Delete Demand Details"
         details={deleteDetails}
         loading={loadingDetails}
+         showDeleteRemark={true}
+         deleteRemark={deleteRemark}
+  setDeleteRemark={setDeleteRemark}
         footerButtons={
           <>
             <Button

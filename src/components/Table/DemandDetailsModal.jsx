@@ -8,11 +8,18 @@ const DemandDetailsModal = ({
   details,
   loading,
   footerButtons,
+
+  // ===== EXTEND =====
   showExtendDate = false,
   extendDate,
   setExtendDate,
   extendRemark,
-  setExtendRemark
+  setExtendRemark,
+
+  // ===== DELETE =====
+  showDeleteRemark = false,
+  deleteRemark,
+  setDeleteRemark
 }) => {
   if (!show) return null;
 
@@ -32,6 +39,7 @@ const DemandDetailsModal = ({
 
           {/* ===== BASIC INFO ===== */}
           <div className="delete-grid">
+
             <div className="info-card">
               <span className="label">Notification No</span>
               <span className="value">{details.notificationNo}</span>
@@ -69,11 +77,13 @@ const DemandDetailsModal = ({
                 {details.drugConstraint ? "Yes" : "No"}
               </span>
             </div>
+
           </div>
 
           {/* ===== EXTEND SECTION ===== */}
           {showExtendDate && (
             <div className="section-block">
+
               <div className="section-title">
                 Extend Submission Date
               </div>
@@ -82,7 +92,7 @@ const DemandDetailsModal = ({
                 <label>New Submission Last Date</label>
                 <input
                   type="date"
-                  value={extendDate}
+                  value={extendDate || ""}
                   onChange={(e) => setExtendDate(e.target.value)}
                 />
               </div>
@@ -92,16 +102,38 @@ const DemandDetailsModal = ({
                 <textarea
                   rows="3"
                   placeholder="Enter remarks"
-                  value={extendRemark}
+                  value={extendRemark || ""}
                   onChange={(e) => setExtendRemark(e.target.value)}
                 />
               </div>
+
+            </div>
+          )}
+
+          {/* ===== DELETE REMARK SECTION ===== */}
+          {showDeleteRemark && (
+            <div className="section-block">
+
+              <div className="section-title">
+                Delete Remark
+              </div>
+
+              <div className="extend-date-field">
+                <textarea
+                  rows="3"
+                  placeholder="Enter delete remark"
+                  value={deleteRemark || ""}
+                  onChange={(e) => setDeleteRemark(e.target.value)}
+                />
+              </div>
+
             </div>
           )}
 
           {/* ===== PROGRAMS ===== */}
           {details.programs?.length > 0 && (
             <div className="section-block">
+
               <div className="section-title">
                 Selected Programs ({details.programs.length})
               </div>
@@ -113,12 +145,14 @@ const DemandDetailsModal = ({
                   </div>
                 ))}
               </div>
+
             </div>
           )}
 
           {/* ===== ITEMS ===== */}
           {details.items?.length > 0 && (
             <div className="section-block">
+
               <div className="section-title">
                 Programs ({details.items.length})
               </div>
@@ -141,6 +175,7 @@ const DemandDetailsModal = ({
                   </tbody>
                 </table>
               </div>
+
             </div>
           )}
 

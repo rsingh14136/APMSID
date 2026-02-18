@@ -9,16 +9,18 @@ import {
   Upload
 } from "lucide-react";
 import "./DemandNotification.scss";
-import { parseDrugExcel, parseOptionHtml } from "../../../components/util/drugUploadHelper";
+import { parseDrugExcel, parseDrugExcelFullColumns, parseOptionHtml } from "../../../components/util/drugUploadHelper";
 import { Trash2, Save } from "lucide-react";
 import Button from "../../../components/Buttons/Button";
 import {
   getStoreNameCombo,
   getProgName,
   getDemandType,
-  getExistingDetail
+  getExistingDetail,
+  saveProjectedDemand
 } from "../../../api/ServiceApi/Demand/DemandNotificationApi";
 import ExistingRequestTable from "../../../components/Table/ExistingRequestTable";
+import { toast } from "react-toastify";
 
 const DemandNotification = ({ onClose }) => {
 
@@ -32,6 +34,7 @@ const DemandNotification = ({ onClose }) => {
 
   const [file, setFile] = useState(null);
   const [drugList, setDrugList] = useState([]);
+  const[completeDrug,setCompleteDrug] = useState([]);
   const [uploadError, setUploadError] = useState("");
 
   const [storeOptions, setStoreOptions] = useState([]);
@@ -47,6 +50,25 @@ const DemandNotification = ({ onClose }) => {
   const [tableData, setTableData] = useState([]);
    const [isDateConstraint, setIsDateConstraint] = useState(false);
   const [lastDateOfSubmission, setLastDateOfSubmission] = useState("");
+  const resetForm = () => {
+   setStoreId("0");
+  setFinYear("0");
+  setDemandType("0");
+  setIsDateConstraint(false);
+  setLastDateOfSubmission("");
+  setRemarks("");
+
+  setSelectedProgs([]);
+  setDrugList([]);
+  setCompleteDrug([]);
+
+  setFile(null);
+  setUploadError("");
+
+  const fileInput = document.getElementById("drugExcelInput");
+  if (fileInput) fileInput.value = "";
+};
+
 
   /* ================= LOAD STORES ================= */
   useEffect(() => {
@@ -130,6 +152,7 @@ setTableData(parsedTable);
   /* ================= MAP / UNMAP ================= */
   const mapProgramme = (prog) => {
     setSelectedProgs(prev => [...prev, prog]);
+    setSearchTerm("");
   };
 
   const unmapProgramme = (prog) => {
@@ -154,11 +177,273 @@ setTableData(parsedTable);
       }
 
       setDrugList(drugs);
+      const fullDrugs=await parseDrugExcelFullColumns(file)
+      console.log("*********++++++*****",fullDrugs)
+      setCompleteDrug(fullDrugs)
     } catch (err) {
       setUploadError("Failed to read Excel file");
       setDrugList([]);
     }
   };
+
+  /*===================request type selection============================== */
+  
+  const validateDemandTypeSelection = (value) => {
+
+  if (!value || value === "0") return true;
+
+  const [indentTypeId, totalCount, activeCount] =
+    value.split("^");
+
+  const total = parseInt(totalCount || "0");
+  const active = parseInt(activeCount || "0");
+
+  // check if any OPEN notification exists
+  const hasOpenNotification = tableData.some(
+    row => row.statusCode !== 50
+  );
+
+  /* ================= RULE 1 =================
+     Annual Demand (83) → only one allowed
+  */
+  if (indentTypeId === "83" && total > 0) {
+    alert(
+      "Notification already raised for Annual Demand.\nNo further Annual Demand Notification allowed."
+    );
+    return false;
+  }
+
+  /* ================= RULE 2 =================
+     Supplementary → only one ACTIVE allowed
+  */
+  if (indentTypeId !== "83" && active > 0) {
+    alert(
+      "For Supplementary Demand, there could be only one Active Notification."
+    );
+    return false;
+  }
+
+  /* ================= RULE 3 =================
+     If Annual is OPEN → block Supplementary
+  */
+  const annualOpen = tableData.some(
+    row =>
+      row.statusCode !== 50 &&
+      row.indentTypeId === "83"
+  );
+
+  if (indentTypeId !== "83" && annualOpen) {
+    alert(
+      `Annual Demand Notification is Active.\nNo Supplementary Demand allowed until Annual is closed.`
+    );
+    return false;
+  }
+
+  /* ================= RULE 4 =================
+     If Supplementary exists → block Annual
+  */
+  const supplementaryExists = tableData.some(
+    row =>
+      row.statusCode !== 50 &&
+      row.indentTypeId !== "83"
+  );
+
+  if (indentTypeId === "83" && supplementaryExists) {
+    alert(
+      `Supplementary Demand already raised.\nAnnual Demand cannot be generated.`
+    );
+    return false;
+  }
+
+  return true;
+};
+
+/*================================(ONSAVE)===================================== */
+
+const handleSave = async (e) => {
+  e.preventDefault();
+
+  /* ================= BASIC VALIDATION ================= */
+
+  if (!storeId || storeId === "0") {
+    toast.error("Please select Store Name");
+    return;
+  }
+
+  if (!finYear || finYear === "0") {
+    toast.error("Please select Financial Year");
+    return;
+  }
+
+  if (!demandType || demandType === "0") {
+    toast.error("Please select Demand Type");
+    return;
+  }
+
+  const [indentTypeId, totalCount, activeCount] =
+    demandType.split("^");
+
+  const total = parseInt(totalCount || "0");
+  const active = parseInt(activeCount || "0");
+
+  /* ================= BUSINESS RULES ================= */
+
+  if (indentTypeId !== "83") {
+    const annualActive = demandTypeOptions.find(
+      opt => opt.value?.startsWith("83^")
+    );
+
+    if (annualActive) {
+      const parts = annualActive.value.split("^");
+
+      if (parseInt(parts[1]) > 0 && parseInt(parts[2]) > 0) {
+        toast.error(
+          `Annual Demand Notification is Active for FY ${finYear}.
+No Supplementary Demand allowed until Annual is closed.`
+        );
+        setDemandType("0");
+        return;
+      }
+    }
+  }
+
+  /* ================= WARNING CONFIRM ================= */
+
+  let msgAlert = true;
+
+  if (indentTypeId !== "83") {
+    const annualOption = demandTypeOptions.find(
+      opt => opt.value?.startsWith("83^")
+    );
+
+    if (annualOption) {
+      const parts = annualOption.value.split("^");
+
+      if (parseInt(parts[1]) === 0) {
+        msgAlert = window.confirm(
+          `No Annual Demand Notification for FY ${finYear} exists.
+You are generating Supplementary Demand.
+After this, Annual Demand cannot be generated!`
+        );
+      }
+    }
+  }
+
+  if (!msgAlert) return;
+
+  /* ================= DATE CONSTRAINT ================= */
+
+  if (isDateConstraint) {
+    if (!lastDateOfSubmission) {
+      toast.error("Last Date of Submission is mandatory");
+      return;
+    }
+
+    const today = new Date();
+    const selectedDate = new Date(lastDateOfSubmission);
+
+    if (selectedDate < today) {
+      toast.error(
+        "Last Date of Submission should be >= current date"
+      );
+      return;
+    }
+
+    const finEndYear = finYear.split("-")[1];
+    const finEndDate = new Date(`03/31/${finEndYear}`);
+
+    if (selectedDate > finEndDate) {
+      toast.error(
+        "Last Date must be before 31 March of Financial Year"
+      );
+      return;
+    }
+  }
+
+  /* ================= PROGRAMME VALIDATION ================= */
+
+  if (selectedProgs.length === 0) {
+    toast.error("Please select a Programme from Programme List");
+    return;
+  }
+
+  /* ================= REMARK VALIDATION ================= */
+
+  if (!remarks.trim()) {
+    toast.error("Remarks is mandatory");
+    return;
+  }
+
+  if (remarks.length > 200) {
+    toast.error("Remarks must be <= 200 characters");
+    return;
+  }
+
+  /* ================= FINAL CONFIRM ================= */
+
+  const conf = window.confirm("You Are Going To Save Records");
+  if (!conf) return;
+
+  const conf1 = window.confirm("Are you sure !!!");
+  if (!conf1) return;
+
+  /* ================= API CALL ================= */
+
+  try {
+    const formData = new FormData();
+
+    formData.append("strStoreId", storeId);
+    formData.append("strIndentPeriodValue", finYear);
+    formData.append("strReqType", demandType);
+    formData.append(
+      "strWhetherDateConstraintValue",
+      isDateConstraint ? "1" : "0"
+    );
+    formData.append("strLastDate", lastDateOfSubmission);
+    formData.append("strRemarks", remarks);
+
+    selectedProgs.forEach(p =>
+      formData.append("programmes", p)
+    );
+
+    if (file) {
+      formData.append("file", file);
+    }
+
+    completeDrug.forEach((drug) => {
+      const batch =
+        `${drug.drugId}|${drug.drugName}|${drug.rate}|${drug.rateUnitId}`;
+
+      formData.append("dataListBatch", batch);
+    });
+
+    // ✅ Loading toast
+    const loadingToast = toast.loading(
+      "Saving Demand Notification..."
+    );
+
+    const response = await saveProjectedDemand(formData);
+
+    toast.dismiss(loadingToast);
+
+    // ✅ Success toast
+    toast.success(
+      response.message || "Saved Successfully"
+    );
+
+    // ✅ Clear form after save
+    resetForm();
+
+  } catch (err) {
+    console.error(err);
+
+    toast.error(
+      err?.response?.data?.message ||
+      "Save failed. Please try again."
+    );
+  }
+};
+
 
 
   return (
@@ -239,7 +524,28 @@ setTableData(parsedTable);
                   <select
                 className="input-control"
                 value={demandType}
-                onChange={e => setDemandType(e.target.value)}
+               onChange={(e) => {
+  const selectedValue = e.target.value;
+
+  const isValid = validateDemandTypeSelection(selectedValue);
+
+  if (!isValid) {
+    setDemandType("0");
+    return;
+  }
+
+  setDemandType(selectedValue);
+
+  // Auto checkbox rule (same as JSP)
+  const indentTypeId = selectedValue.split("^")[0];
+
+  if (indentTypeId === "83") {
+    setIsDateConstraint(true);
+  } else {
+    setIsDateConstraint(false);
+  }
+}}
+
               >
                 {demandTypeOptions.map(d => (
                   <option key={d.value} value={d.value}>{d.label}</option>
@@ -395,8 +701,8 @@ setTableData(parsedTable);
 
           {/* ===== ACTIONS ===== */}
           <footer className="actionsButton">
-            <Button variant="danger" leftIcon={Trash2}>Clear</Button>
-            <Button variant="success" leftIcon={Save}>Save</Button>
+            <Button variant="danger" leftIcon={Trash2}  onClick={resetForm}>Clear</Button>
+            <Button variant="success" leftIcon={Save} onClick={handleSave}>Save</Button>
           </footer>
 
         </div>
