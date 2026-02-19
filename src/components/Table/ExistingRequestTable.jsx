@@ -16,7 +16,8 @@ const ExistingRequestTable = ({
   rows,
   onOpenModal,
   financialYear,
-  storeId
+  storeId,
+    refreshTable 
 }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
@@ -139,19 +140,28 @@ const handleConfirmDelete = async () => {
       strRemarks: deleteRemark.trim()
     };
 
-    console.log("Delete Payload:", payload);
-
     const response = await deleteDemand(payload);
-    console.log("response",response.status)
 
-    if (response.status === "SUCCESS") {
+    console.log("FULL RESPONSE:", response);
+
+    // ✅ accept multiple success formats
+    const isSuccess =
+      response?.status === "SUCCESS" ||
+      response?.status === "success" ||
+      response?.status === 200 ||
+      response?.success === true;
+
+    if (isSuccess) {
       alert(response.message || "Deleted Successfully");
 
-      // ✅ reset states
+      // ✅ CLOSE MODAL FIRST
       setShowDeleteModal(false);
+
+      // ✅ CLEAR STATES
       setDeleteDetails(null);
       setSelectedRow(null);
       setDeleteRemark("");
+       refreshTable && refreshTable();
 
     } else {
       alert(response.message || "Delete failed");
@@ -164,6 +174,7 @@ const handleConfirmDelete = async () => {
     setIsDeleting(false);
   }
 };
+
 
   /* ================= CONFIRM EXTEND ================= */
   const handleConfirmExtend = async () => {

@@ -21,6 +21,7 @@ import {
 } from "../../../api/ServiceApi/Demand/DemandNotificationApi";
 import ExistingRequestTable from "../../../components/Table/ExistingRequestTable";
 import { toast } from "react-toastify";
+import { useSuccessModal } from "../../../hooks/useSuccessModal";
 
 const DemandNotification = ({ onClose }) => {
 
@@ -50,6 +51,7 @@ const DemandNotification = ({ onClose }) => {
   const [tableData, setTableData] = useState([]);
    const [isDateConstraint, setIsDateConstraint] = useState(false);
   const [lastDateOfSubmission, setLastDateOfSubmission] = useState("");
+  const { showSuccess } = useSuccessModal();
   const resetForm = () => {
    setStoreId("0");
   setFinYear("0");
@@ -119,30 +121,43 @@ const DemandNotification = ({ onClose }) => {
     loadProgrammes();
   }, [storeId, isManualStoreChange]);
 
+  const loadExistingRequests = async () => {
+  try {
+    const table = await getExistingDetail(finYear, storeId);
+    const parsedTable = JSON.parse(table);
+
+    setTableData(parsedTable);
+  } catch (e) {
+    console.error(e);
+    setTableData([]);
+  }
+};
+
+
   /* ================= LOAD DEMAND + TABLE ON FIN YEAR CHANGE ================= */
-  useEffect(() => {
-    if (!finYear || !storeId) return;
+useEffect(() => {
+  if (!finYear || !storeId) return;
 
-    const loadDemandData = async () => {
-      try {
-        const demandHtml = await getDemandType(finYear, storeId);
-        const parsedDemand = parseOptionHtml(demandHtml);
-        setDemandTypeOptions(parsedDemand);
-        setDemandType(parsedDemand.find(d => d.selected)?.value || "0");
+  const loadDemandData = async () => {
+    try {
+      const demandHtml = await getDemandType(finYear, storeId);
+      const parsedDemand = parseOptionHtml(demandHtml);
 
-        const table = await getExistingDetail(finYear, storeId);
-        const parsedTable = JSON.parse(table);
-        console.log("==>",parsedTable)
-setTableData(parsedTable);
+      setDemandTypeOptions(parsedDemand);
+      setDemandType(parsedDemand.find(d => d.selected)?.value || "0");
 
-      } catch (e) {
-        console.error(e);
-        setTableData([]);
-      }
-    };
+      // ✅ reuse function
+      await loadExistingRequests();
 
-    loadDemandData();
-  }, [finYear, storeId]);
+    } catch (e) {
+      console.error(e);
+      setTableData([]);
+    }
+  };
+
+  loadDemandData();
+}, [finYear, storeId]);
+
 
   /* ================= FILTER AVAILABLE ================= */
   const filteredAvailable = allProgrammes
@@ -426,11 +441,12 @@ After this, Annual Demand cannot be generated!`
 
     toast.dismiss(loadingToast);
 
-    // ✅ Success toast
-    toast.success(
-      response.message || "Saved Successfully"
-    );
-
+    // // ✅ Success toast
+    // toast.success(
+    //   response.message || "Saved Successfully"
+    // );
+    showSuccess("Demand Notification Saved Successfully");
+await loadExistingRequests();
     // ✅ Clear form after save
     resetForm();
 
@@ -505,7 +521,13 @@ After this, Annual Demand cannot be generated!`
             {/* ✅ ONLY FIX IS HERE */}
             {/* ===== EXISTING REQUEST TABLE ===== */}
 <div className="existing-table-section">
-  <ExistingRequestTable rows={Array.isArray(tableData) ? tableData : []} financialYear={finYear} storeId={storeId} />
+<ExistingRequestTable
+  rows={Array.isArray(tableData) ? tableData : []}
+  financialYear={finYear}
+  storeId={storeId}
+  refreshTable={loadExistingRequests}
+/>
+
 </div>
 
 

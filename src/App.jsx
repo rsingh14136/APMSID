@@ -2,10 +2,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./Home";
 import Dashboard from "./components/Dashboard/Dashboard";
 import { ToastContainer } from "react-toastify";
-
+import { SuccessModalProvider } 
+  from "./Pages/Model/SuccessModalProvider";
 
 function App() {
   return (
+     <SuccessModalProvider>
     <BrowserRouter basename="/IMCS">
       <Routes>
         <Route path="/login" element={<Home />} />
@@ -20,6 +22,7 @@ function App() {
           draggable
         />
     </BrowserRouter>
+  </SuccessModalProvider>
   );
 }
 
