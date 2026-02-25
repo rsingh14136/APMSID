@@ -4,6 +4,7 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import { ToastContainer } from "react-toastify";
 import { SuccessModalProvider } 
   from "./Pages/Model/SuccessModalProvider";
+import ProtectedRoute from "./api/ServiceApi/ProtectedRoute";
 
 function App() {
   return (
@@ -11,7 +12,14 @@ function App() {
     <BrowserRouter basename="/IMCS">
       <Routes>
         <Route path="/login" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+       <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
       </Routes>
       <ToastContainer
           position="top-right"

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ministersimage from "../assets/images/ministers.png";
 import medicinesbottle from "../assets/images/slider/medicines-bottle.png";
 import supplychain from "../assets/images/slider/supply-chain.png";
@@ -8,6 +8,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faLockOpen } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { useNavigate } from "react-router";
+import { loginUser } from "../api/ServiceApi/authService";
+
 
 
 
@@ -16,27 +18,39 @@ function Slider() {
   const [password, setPassword] = useState("");
   const [captchaValue, setCaptchaValue] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [captchaUrl, setCaptchaUrl] = useState("");
   const navigate = useNavigate();
-    const handleSubmit = (e) => {
-    e.preventDefault();
+  const loadCaptcha = () => {
+  setCaptchaUrl(
+    "http://localhost:8081/IMCS/CaptchaServlet?time=" + new Date().getTime()
+  );
+};
+  useEffect(() => {
+  loadCaptcha();
+}, []);
 
-    // Dummy credentials
-    const dummyUser = "admin";
-    const dummyPass = "123456";
-    const dummyCaptcha = "46219Q";
 
-    if (
-      username === dummyUser &&
-      password === dummyPass &&
-      captchaValue === dummyCaptcha
-    ) {
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  console.log(e)
+
+  try {
+    const res = await loginUser(username, password, captchaValue);
+    console.log("res===>",res)
+
+    if (res.status_code === 200) {
       alert("Login successful ✅");
-       navigate("/dashboard");
 
+      navigate("/dashboard");
     } else {
-      alert("Invalid credentials or captcha ❌");
+      alert(res.message || "Login failed");
     }
-  };
+
+  } catch (error) {
+    console.error(error);
+    alert("Invalid credentials ❌");
+  }
+};
     
   return (
      <section id="slider">
@@ -159,7 +173,7 @@ function Slider() {
                   onChange={(e) => setCaptchaValue(e.target.value)}/>
                                     <p className="text-decoration-underline">Captcha is case
                                         sensitive
-                                    </p> <img src={captcha}/>
+                                    </p> <img src={captchaUrl}/>
                                 </div>
                                 <div className="submitbutton btn position-relative p-0 me-2"> <input type="submit" className="border-0 bg-transparent text-white"
                                         value="GET STARTED"/>

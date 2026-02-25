@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import Cookies from "js-cookie";
 import "./Header.scss";
 import { useNavigate } from "react-router";
 import ChangePassword from "./ChangePassword";
@@ -23,8 +24,9 @@ export default function Header() {
   }, []);
 
   const handleLogout = () => {
-    // localStorage.removeItem("token");
-    navigate("/login");
+  Cookies.remove("token");
+  navigate("/login");
+
   };
 
   return (
