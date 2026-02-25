@@ -6,7 +6,7 @@ import "../Dashboard/dashboard.scss";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import GroupMasterUI from "../../Pages/GroupMaster/GroupMasterUI";
-import DemandNotification from "../../Pages/Services/Demand/DemandNotification";
+import DemandNotification from "../../Pages/Services/Demand/DemandNotifications";
 import { VIEW_MAP } from "./viewMap";
 
 export default function Dashboard() {
