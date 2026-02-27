@@ -1,116 +1,119 @@
-const BASE_URL = "http://localhost:8081/DWH_SERVICES/projectedDemandRequestTrans";
+import axiosClient from "../axiosClient";
 
 
+const BASE_URL = "/DWH_SERVICES/projectedDemandRequestTrans";
 
+// ================= STORE NAME =================
 export const getStoreNameCombo = async () => {
-  const res = await fetch(`${BASE_URL}/init`);
-  if (!res.ok) throw new Error("Failed to fetch group list");
-  return res.json();
+  const res = await axiosClient.get(`${BASE_URL}/init`);
+  return res.data;
 };
 
+// ================= PROGRAM NAME =================
 export const getProgName = async () => {
-  const res = await fetch(`${BASE_URL}/PROGNAME`);
-  if (!res.ok) throw new Error("Failed to fetch PROGNAME list");
-  return res.json();
+  const res = await axiosClient.get(`${BASE_URL}/PROGNAME`);
+  return res.data;
 };
+
+// ================= DEMAND TYPE =================
 export const getDemandType = async (finYear, storeId) => {
-  const res = await fetch(
-    `${BASE_URL}/DEMANDTYPE?strIndentPeriodValue=${encodeURIComponent(finYear)}&storeId=${storeId}`,
-
-  );
-  if (!res.ok) throw new Error("Failed to fetch Demand Type");
-  return res.text(); // ✅ TEXT, NOT JSON
-};
-
-export const getExistingDetail = async (finYear, storeId) => {
-  const res = await fetch(
-    `${BASE_URL}/GETEXISTINGREQDTL?financialYear=${encodeURIComponent(finYear)}&storeId=${storeId}`,
-
-  );
-  if (!res.ok) throw new Error("Failed to fetch Existing Detail");
-  return res.text(); // ✅ TEXT
-};
-
-export const getDeleteDetail = async (finYear,notificationNo, storeId) => {
-  const res = await fetch(
-    `${BASE_URL}/delete-details?strIndentPeriodValue=${encodeURIComponent(finYear)}&notificationNo=${notificationNo}&storeId=${storeId}`,
-
-  );
-  if (!res.ok) throw new Error("Failed to fetch Existing Detail");
-  return res.text(); // ✅ TEXT
-};
-
-export const getExtendDetail = async (finYear,notificationNo, storeId) => {
-  const res = await fetch(
-    `${BASE_URL}/delete-details?strIndentPeriodValue=${encodeURIComponent(finYear)}&notificationNo=${notificationNo}&storeId=${storeId}`,
-
-  );
-  if (!res.ok) throw new Error("Failed to fetch Existing Detail");
-  return res.text(); // ✅ TEXT
-};
-export const getViewDetail = async (finYear,notificationNo, storeId) => {
-  const res = await fetch(
-    `${BASE_URL}/viewDetails?strIndentPeriodValue=${encodeURIComponent(finYear)}&notificationNo=${notificationNo}&storeId=${storeId}`,
-
-  );
-  if (!res.ok) throw new Error("Failed to fetch Existing Detail");
-  return res.text(); // ✅ TEXT
-};
-
-export const extendDemandRequest = async (payload) => {
-  try {
-    const response = await fetch(
-   `${BASE_URL}/extend`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Failed to extend demand");
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error("Extend API Error:", error);
-    throw error;
-  }
-};
-
-export const deleteDemand = async (payload) => {
-  const response = await fetch(
-    `${BASE_URL}/delete`,
-    {
-      method: "POST", // or POST if backend uses POST
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error("Delete failed");
-  }
-
-  return response.json();
-};
-
-
-export const saveProjectedDemand = async (formData) => {
-  const res = await fetch(`${BASE_URL}/save`, {
-    method: "POST",
-    body: formData
+  const res = await axiosClient.get(`${BASE_URL}/DEMANDTYPE`, {
+    params: {
+      strIndentPeriodValue: finYear,
+      storeId: storeId,
+    },
+    responseType: "text", // ✅ because backend returns TEXT
   });
 
-  return res.json();
+  return res.data;
 };
 
+// ================= EXISTING DETAILS =================
+export const getExistingDetail = async (finYear, storeId) => {
+  const res = await axiosClient.get(`${BASE_URL}/GETEXISTINGREQDTL`, {
+    params: {
+      financialYear: finYear,
+      storeId: storeId,
+    },
+    responseType: "text",
+  });
 
+  return res.data;
+};
 
+// ================= DELETE DETAIL =================
+export const getDeleteDetail = async (
+  finYear,
+  notificationNo,
+  storeId
+) => {
+  const res = await axiosClient.get(`${BASE_URL}/delete-details`, {
+    params: {
+      strIndentPeriodValue: finYear,
+      notificationNo,
+      storeId,
+    },
+    responseType: "text",
+  });
 
+  return res.data;
+};
 
+// ================= EXTEND DETAIL =================
+export const getExtendDetail = async (
+  finYear,
+  notificationNo,
+  storeId
+) => {
+  const res = await axiosClient.get(`${BASE_URL}/delete-details`, {
+    params: {
+      strIndentPeriodValue: finYear,
+      notificationNo,
+      storeId,
+    },
+    responseType: "text",
+  });
+
+  return res.data;
+};
+
+// ================= VIEW DETAIL =================
+export const getViewDetail = async (
+  finYear,
+  notificationNo,
+  storeId
+) => {
+  const res = await axiosClient.get(`${BASE_URL}/viewDetails`, {
+    params: {
+      strIndentPeriodValue: finYear,
+      notificationNo,
+      storeId,
+    },
+    responseType: "text",
+  });
+
+  return res.data;
+};
+
+// ================= EXTEND DEMAND =================
+export const extendDemandRequest = async (payload) => {
+  const res = await axiosClient.post(`${BASE_URL}/extend`, payload);
+  return res.data;
+};
+
+// ================= DELETE DEMAND =================
+export const deleteDemand = async (payload) => {
+  const res = await axiosClient.post(`${BASE_URL}/delete`, payload);
+  return res.data;
+};
+
+// ================= SAVE PROJECTED DEMAND =================
+export const saveProjectedDemand = async (formData) => {
+  const res = await axiosClient.post(`${BASE_URL}/save`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return res.data;
+};
