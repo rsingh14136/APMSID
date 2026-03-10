@@ -9,6 +9,10 @@ const axiosClient = axios.create({
 // ⭐ Interceptor runs before EVERY request
 axiosClient.interceptors.request.use(
   (config) => {
+      if (config.url === "/IMCS/auth/menus") {
+      return config;
+    }
+
     const token = Cookies.get("token");
 console.log("token====>>>",token)
     if (token) {

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSetRecoilState } from "recoil";
 import ministersimage from "../assets/images/ministers.png";
 import medicinesbottle from "../assets/images/slider/medicines-bottle.png";
 import supplychain from "../assets/images/slider/supply-chain.png";
@@ -9,6 +10,10 @@ import {faLockOpen } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { useNavigate } from "react-router";
 import { loginUser } from "../api/ServiceApi/authService";
+import { menuState } from "../recoil/menuAtom";
+import { getUserMenu } from "../api/ServiceApi/menuApi";
+import { transformMenu } from "./util/transformMenu";
+
 
 
 
@@ -20,6 +25,7 @@ function Slider() {
   const [showPassword, setShowPassword] = useState(false);
   const [captchaUrl, setCaptchaUrl] = useState("");
   const navigate = useNavigate();
+  const setMenu = useSetRecoilState(menuState);
   const loadCaptcha = () => {
   setCaptchaUrl(
     "http://localhost:8081/IMCS/CaptchaServlet?time=" + new Date().getTime()
@@ -40,7 +46,11 @@ const handleSubmit = async (e) => {
 
     if (res.status_code === 200) {
       alert("Login successful ✅");
+ const menuRes = await getUserMenu(res.data.gnumUserId,res.data.gnumHospCode);
 
+    const formattedMenu = transformMenu(menuRes.data.menuList);
+
+setMenu(formattedMenu);
       navigate("/dashboard");
     } else {
       alert(res.message || "Login failed");

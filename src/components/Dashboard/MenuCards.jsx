@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { menuData } from "../Dashboard/menuData";
+//import { menuData } from "../Dashboard/menuData";
+import { useRecoilValue } from "recoil";
+
 import "./menuCards.scss";
 
 import demandImg from "../../../src/assets/images/demand.png";
@@ -7,6 +9,7 @@ import reciveImg from "../../../src/assets/images/recive.png";
 import returnImg from "../../../src/assets/images/return.jpg";
 import issueImg from "../../../src/assets/images/issueitem.png";
 import inventoryMag from "../../../src/assets/images/inventryMang.jpg";
+import { menuState } from "../../recoil/menuAtom";
 
 
 
@@ -21,7 +24,7 @@ const cardImages = {
 
 export default function MenuCards({ section, onBack, onCardClick }) {
   const [activeGroup, setActiveGroup] = useState(null);
-
+const menuData = useRecoilValue(menuState);
   let cards = [];
 
   if (section === "services") {

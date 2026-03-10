@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
 import MenuColumn from "./MenuColumn";
 import MenuCards from "./MenuCards";
-import { menuData } from "../Dashboard/menuData";
+import { useRecoilValue } from "recoil";
+
+//import { menuData } from "../Dashboard/menuData";
 import "../Dashboard/dashboard.scss";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import GroupMasterUI from "../../Pages/GroupMaster/GroupMasterUI";
 import DemandNotification from "../../Pages/Services/Demand/DemandNotifications";
 import { VIEW_MAP } from "./viewMap";
+import { menuState } from "../../recoil/menuAtom";
 
 export default function Dashboard() {
   const [activeView, setActiveView] = useState("dashboard");
   const [openCard, setOpenCard] = useState(null);
   const [cardView, setCardView] = useState("");
+  const menuData = useRecoilValue(menuState);
 
   /* 🔁 Fix scroll jump when view changes */
   useEffect(() => {
