@@ -13,6 +13,7 @@
     width: 100%;
     min-width: 900px; /* 👈 forces horizontal scroll when screen is small */
     border-collapse: collapse;
+     table-layout: fixed;
   }
 
   thead {
@@ -43,7 +44,13 @@
       td {
         padding: 14px;
         white-space: nowrap; /* 👈 prevents wrapping */
+         overflow: hidden;
+  text-overflow: ellipsis;
       }
+      td:hover {
+  overflow: visible;
+  white-space: normal;
+}
 
       .active {
         border-radius: 20px;

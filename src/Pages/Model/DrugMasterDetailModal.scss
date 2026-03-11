@@ -1,0 +1,130 @@
+/* Overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Modal container */
+.drug-modal-container {
+  background: #ffffff;
+  width: min(90vw, 900px);
+  max-height: 90vh;
+  border-radius: 18px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: fadeIn 0.25s ease;
+}
+
+/* Header */
+.modals-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 22px;
+  border-bottom: 1px solid #e5e7eb;
+
+  h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .close-icon {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #6b7280;
+
+    &:hover {
+      color: #ef4444;
+    }
+  }
+}
+
+/* Body grid */
+.drug-grid {
+  padding: 22px;
+  overflow-y: auto;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  margin: 20px;
+  background: #f9fafb;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    color: #111827;
+
+    b {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 3px;
+      font-weight: 600;
+    }
+  }
+}
+
+/* Footer */
+.modals-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 22px;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* Button */
+.btn-secondary {
+  padding: 10px 22px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+
+  &:hover {
+    background: #f3f4f6;
+  }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .drug-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .drug-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .drug-modal-container {
+    width: 95vw;
+    max-height: 95vh;
+  }
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

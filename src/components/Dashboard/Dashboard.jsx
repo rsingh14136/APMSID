@@ -11,6 +11,7 @@ import GroupMasterUI from "../../Pages/GroupMaster/GroupMasterUI";
 import DemandNotification from "../../Pages/Services/Demand/DemandNotifications";
 import { VIEW_MAP } from "./viewMap";
 import { menuState } from "../../recoil/menuAtom";
+import DrugMasterUI from "../../Pages/DrugMaster/DrugMasterUI";
 
 export default function Dashboard() {
   const [activeView, setActiveView] = useState("dashboard");
@@ -116,6 +117,11 @@ export default function Dashboard() {
         {activeView === "groupMaster" && (
           <div className="dashboard-content">
             <GroupMasterUI onBack={() => setActiveView("dashboard")} />
+          </div>
+        )}
+          {activeView === "drugMaster" && (
+          <div className="dashboard-content">
+            <DrugMasterUI onBack={() => setActiveView("dashboard")} />
           </div>
         )}
 
