@@ -109,3 +109,28 @@ export const parseOptionHtml = (html) => {
     selected: opt.hasAttribute("selected")
   }));
 };
+
+export const convertDate = (dateStr) => {
+
+  const months = {
+    Jan: "01", Feb: "02", Mar: "03", Apr: "04",
+    May: "05", Jun: "06", Jul: "07", Aug: "08",
+    Sep: "09", Oct: "10", Nov: "11", Dec: "12"
+  };
+
+  const [day, month, year] = dateStr.split("-");
+
+  return `${year}-${months[month]}-${day}`;
+};
+export const convertDateToBackend = (dateStr) => {
+  if (!dateStr) return "";
+
+  const months = [
+    "Jan","Feb","Mar","Apr","May","Jun",
+    "Jul","Aug","Sep","Oct","Nov","Dec"
+  ];
+
+  const [year, month, day] = dateStr.split("-");
+
+  return `${day}-${months[parseInt(month, 10) - 1]}-${year}`;
+};

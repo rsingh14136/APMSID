@@ -9,10 +9,15 @@ import {
   getDrugListByGroup,
   getDrugListByStatus,
   getDrugListByApprove,
-  getDrugListByCat
+  getDrugListByCat,
+  saveDrug,
+  deleteDrug
 } from "../../api/drugMasterApi";
 import GroupDetailsModal from "../Model/GroupDetailsModal";
 import DrugMasterDetailModal from "../Model/DrugMasterDetailModal";
+import AddDrugMasterModal from "../Model/AddDrugMasterModal";
+import DeleteConfirmModal from "../Model/DeleteConfirmModal";
+
 
 export default function DrugMasterUI({ onBack }) {
 
@@ -27,9 +32,11 @@ export default function DrugMasterUI({ onBack }) {
   const [groupList, setGroupList] = useState([]);
   const [approveTypeList, setApproveTypeList] = useState([]);
   const [drugList, setDrugList] = useState([]);
-    const [selectedRow, setSelectedRow] = useState(null);
-      const [showModal, setShowModal] = useState(false);
-      const[tableResponse,setTableResponse]=useState([]);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [rowToDelete, setRowToDelete] = useState(null);
 
   const itemsPerPage = 5;
 
@@ -88,8 +95,7 @@ console.log("=======>>>>",res.approvedType[0]);
 setApproveTypeList(approveTypes);
  const tableRes = await getDrugListByCat(category, recordStatus);
 
- console.log("tableRes==>>",tableRes)
- setTableResponse(tableRes);
+
 
     const tableData = (tableRes || []).map(item => ({
        drugId: item.drugId,
@@ -233,8 +239,110 @@ const handleApproveChange = async (value) => {
       d.drugName?.toLowerCase().includes(search.toLowerCase()) ||
       d.groupName?.toLowerCase().includes(search.toLowerCase())
   );
+ const handleOpenAddForm = async () => {
+    try {
+  
+ 
+      setAddModalOpen(true);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const handleAddDrug = async (formData) => {
+  try {
 
+    const payload = {
+  strCategoryId: formData.category,
+  strGroupId: formData.groupName,
+  strSubCatTypeId: formData.subCategory,
 
+  strGenericItemName: formData.genericItem,
+
+  strDrugName: formData.drugName,
+  strCPACode: formData.drugCode,
+
+  strItemTypeValues: formData.drugType,
+  strManufacturerId: formData.manufacturer,
+
+  strIphsName: formData.iphsName,
+
+  strDefaultRate: formData.defaultRate,
+  strRateUnitId: formData.rateUnit,
+
+  strDefaultPackSizeId: formData.packSize,
+
+  strApprovedType: formData.approvedType,
+  strIssueTypeComboOptions: formData.issueType,
+
+  strItemMake: formData.drugMake,
+  strQCType: formData.qcType,
+  strVEDCategory: formData.drugClassification,
+  strBudgetClass: formData.drugBudgetClassification,
+
+  strSterilityTestId: formData.sterilityTest,
+
+  strIsItemSachet: formData.isSachet,
+  strIsQuantifiable: formData.isQuantifiable,
+  strIsEDL: formData.isEDL,
+
+  strBatchNo: formData.batchNo,
+  strExpiryDate: formData.expiryDate,
+
+  strIsIPHS: formData.isIPHS,
+  strIsPriotized: formData.isPrioritized,
+
+  strSampleLimit: formData.sampleSendLimit,
+  strSpecification: formData.specification,
+
+  strEffectiveFrom: formData.effectiveDate,
+
+  strMktRate: formData.marketPrice,
+  strMktRateUnitId: formData.marketPrice,
+  strIssueRateConfigFlg:formData.StrIssueRateConfigFlg,
+  strConfigIssueRate:formData.StrConfigIssueRate
+};
+
+    const res = await saveDrug(payload);
+
+    if (res.status === "success") {
+      alert(res.message);
+      setAddModalOpen(false);
+
+      // reload table
+      loadInitialData();
+    } else {
+      alert(res.message);
+    }
+
+  } catch (error) {
+    console.error(error);
+    alert("Error saving drug");
+  }
+};
+
+const handleDelete = (row) => {
+  setRowToDelete(row);
+  setDeleteModalOpen(true);
+};
+
+const confirmDelete = async () => {
+  try {
+
+    const res = await deleteDrug(rowToDelete.drugId);
+
+    alert(res.message || "Deleted Successfully");
+
+    setDeleteModalOpen(false);
+    setRowToDelete(null);
+
+    // reload table
+    loadInitialData();
+
+  } catch (error) {
+    console.error("Delete error", error);
+    alert("Error deleting record");
+  }
+};
   return (
     <div className="group-master">
 
@@ -319,7 +427,13 @@ const handleApproveChange = async (value) => {
             search={search}
             setSearch={setSearch}
             tableData={drugList}
+            onAddClick={handleOpenAddForm}
           />
+          <AddDrugMasterModal
+                      show={addModalOpen}
+                      onClose={() => setAddModalOpen(false)}
+                       onSave={handleAddDrug}
+                    />
 
           {/* ================= Table ================= */}
 
@@ -331,6 +445,7 @@ const handleApproveChange = async (value) => {
             setCurrentPage={setCurrentPage}
             itemsPerPage={itemsPerPage}
               onView={handleRowClick}
+               onDelete={handleDelete}
             
           />
            <DrugMasterDetailModal
@@ -339,6 +454,14 @@ const handleApproveChange = async (value) => {
   drugId={selectedRow?.drugId}
   groupId={selectedRow?.groupId}
   groupName={selectedRow?.groupName}
+/>
+<DeleteConfirmModal
+  show={deleteModalOpen}
+  onClose={() => setDeleteModalOpen(false)}
+  onConfirm={confirmDelete}
+  row={{
+    name: rowToDelete?.drugName
+  }}
 />
 
         </div>

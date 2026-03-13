@@ -66,3 +66,40 @@ export const getDrugDetails = async (drugId, groupId, groupName) => {
   );
   return res.data;
 }
+
+export const getBeforeAddDrug = async () => {
+  const res = await axiosClient.get(`${BASE_URL}/beforeAddDrug`);
+  return res.data;
+};
+
+
+export const getGenericItemByGroupId = async (groupId) => {
+  const res = await axiosClient.get(`${BASE_URL}/genericItems/${groupId}`);
+  return res.data;
+};
+
+export const getDefaultPackByGenItemId = async (itemId) => {
+  const res = await axiosClient.get(`${BASE_URL}/defaultPackSize/${itemId}`);
+  return res.data;
+};
+
+
+export const getRatePerUnitByGenItemId = async (itemId) => {
+  const res = await axiosClient.get(`${BASE_URL}/getStrMktUnitIdBasedOnItemId/${itemId}`);
+  return res.data;
+};
+
+export const saveDrug = async (data) => {
+  const res = await axiosClient.post(
+    `${BASE_URL}/saveDrugMstdata`,
+    data
+  );
+  return res.data;
+};
+
+export const deleteDrug = async (drugId) => {
+  const res = await axiosClient.delete(
+    `${BASE_URL}/deleteDrugMstDetails/${drugId}`
+  );
+  return res.data;
+};
