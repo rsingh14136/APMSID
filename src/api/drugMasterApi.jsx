@@ -103,3 +103,11 @@ export const deleteDrug = async (drugId) => {
   );
   return res.data;
 };
+
+export const getModifyDrugDetails = async (drugId, groupId, groupName) => {
+  const res = await axiosClient.get(
+    `/modifyDrugMstDetails/${drugId}/${groupId}/${groupName}`
+  );
+
+  return res.data;
+};

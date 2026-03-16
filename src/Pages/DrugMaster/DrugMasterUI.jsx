@@ -17,6 +17,7 @@ import GroupDetailsModal from "../Model/GroupDetailsModal";
 import DrugMasterDetailModal from "../Model/DrugMasterDetailModal";
 import AddDrugMasterModal from "../Model/AddDrugMasterModal";
 import DeleteConfirmModal from "../Model/DeleteConfirmModal";
+import EditDrugModal from "../Model/EditDrugModal";
 
 
 export default function DrugMasterUI({ onBack }) {
@@ -37,6 +38,7 @@ export default function DrugMasterUI({ onBack }) {
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [rowToDelete, setRowToDelete] = useState(null);
+    const [showEditModal, setShowEditModal] = useState(false);
 
   const itemsPerPage = 5;
 
@@ -324,6 +326,10 @@ const handleDelete = (row) => {
   setRowToDelete(row);
   setDeleteModalOpen(true);
 };
+ const handleEdit = (row) => {
+      setSelectedRow(row);
+      setShowEditModal(true);
+    };
 
 const confirmDelete = async () => {
   try {
@@ -446,7 +452,7 @@ const confirmDelete = async () => {
             itemsPerPage={itemsPerPage}
               onView={handleRowClick}
                onDelete={handleDelete}
-            
+             onEdit={handleEdit}
           />
            <DrugMasterDetailModal
   show={showModal}
@@ -455,6 +461,14 @@ const confirmDelete = async () => {
   groupId={selectedRow?.groupId}
   groupName={selectedRow?.groupName}
 />
+
+ <EditDrugModal
+              show={showEditModal}
+              onClose={() => setShowEditModal(false)}
+            drugId={selectedRow?.drugId}
+  groupId={selectedRow?.groupId}
+  groupName={selectedRow?.groupName}
+            />
 <DeleteConfirmModal
   show={deleteModalOpen}
   onClose={() => setDeleteModalOpen(false)}
